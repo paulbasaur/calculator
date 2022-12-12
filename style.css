@@ -51,6 +51,7 @@ body {
   height: 85px;
   border-radius: 45px;
   border-style: outset;
+  font-size: 40px;
 }
 
 .wide-button {
@@ -58,4 +59,5 @@ body {
   height: 85px;
   border-radius: 45px;
   border-style: outset;
+  font-size: 40px;
 }
