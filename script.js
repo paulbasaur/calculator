@@ -34,6 +34,14 @@ function getExpression() {
   // TODO
 }
 
+function getFirstNum() {
+  // TODO
+}
+
+function getSecondNum() {
+  // TODO
+}
+
 function clearDisplay() {
   const display = document.querySelector("#display-numbers");
   display.textContent = "0";
