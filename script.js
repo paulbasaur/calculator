@@ -58,7 +58,7 @@ function parseTrailingZeros(input){
 }
 
 function appendOperator(input, button) {
-  const operators = ["+", "-", "X", "/"];
+  const operators = ["+", "-", "X", "/", "="];
   let prevInput = input.slice(-1);
   if (operators.includes(prevInput) || prevInput == ".") {
     return(input.slice(0, -1) + button);
@@ -72,7 +72,6 @@ function appendOperator(input, button) {
 function evaluateCheck(input, button) {
   const operators = ["+", "-", "X", "/"];
   let originalInput = input.slice(0, -1);
-  console.log(originalInput);
   for (let operator of operators) {
     if (originalInput.includes(operator)) {
       if (operator == "+") {
@@ -89,6 +88,12 @@ function evaluateCheck(input, button) {
   return(input);
 }
 
+function afterEquals(userInput, button) {
+    let prevInput = userInput.slice(-1);
+    if (prevInput == "=") {return button.textContent;}
+    else {return userInput + button.textContent;}
+}
+
 function clearDisplay() {
   const display = document.querySelector("#display-numbers");
   display.textContent = "0";
@@ -96,7 +101,7 @@ function clearDisplay() {
 
 function updateDisplay(userInput) {
   const display = document.querySelector("#display-numbers");
-  const operators = ["+", "-", "X", "/"];
+  const operators = ["+", "-", "X", "/", "="];
   let lastInput = userInput.slice(-1);
   let expressionValues = [];
   for (let operator of operators) {
@@ -116,23 +121,17 @@ function isValidInput(userInput, button) {
   let inputUpdate = "";
 
   if (buttonClass.includes("number")) {
-    validInput = true;
+    return(afterEquals(userInput, button));
   } else if (buttonClass.includes("operator")) {
     validInput = true;
     inputUpdate = appendOperator(userInput, button.textContent);
-    return(evaluateCheck(inputUpdate, button.textContent));
+    return (evaluateCheck(inputUpdate, button.textContent));
   } else if (buttonClass.includes("decimal")) {
     validInput = decimalCheck(userInput);
-    if (validInput) {return(userInput+leadingZero(userInput))}
-  } else if (buttonClass.includes("equals")) {
-    validInput = true;
-    return(evaluateCheck(userInput, "="));
-  }
-
-  if (validInput) {
-    return userInput + button.textContent;
-  } else {
+    if (validInput) {return (userInput + leadingZero(userInput))}
     return userInput;
+  } else if (buttonClass.includes("equals")) {
+      return evaluateCheck(userInput, "=");
   }
 }
 
@@ -175,3 +174,11 @@ clear.addEventListener('click', () => {
   clearDisplay();
   userInput = "";
 });
+
+//leading zero when pressing decimal after evaluating; maybe include as part of afterEquals function
+//check previous input after evaluating to a negative number; issue when using equals button;
+//rename isValidInput function to something more applicable
+//colapse eventListeners into a function
+//percent function
+//negate function
+//parseTrailingZeros function
