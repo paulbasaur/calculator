@@ -1,6 +1,7 @@
 function add(expression) {
   const values = expression.split("+");
-  return(Number(values[0]) + Number(values[1]));
+  const result = Number(values[0]) + Number(values[1]);
+  return maxCheck(result);
 }
 
 function subtract(expression) {
@@ -10,12 +11,14 @@ function subtract(expression) {
 
 function multiply(expression) {
   const values = expression.split("X");
-  return(Number(values[0]) * Number(values[1]));
+  const result = Number(values[0]) * Number(values[1]);
+  return maxCheck(result);
 }
 
 function divide(expression) {
   const values = expression.split("/");
-  return(Number(values[0]) / Number(values[1]));
+  const result = Number(values[0]) / Number(values[1]);
+  return maxCheck(result);
 }
 
 function percent(num1) {
@@ -24,6 +27,11 @@ function percent(num1) {
 
 function negate(num1) {
   return(num1 * -1);
+}
+
+function maxCheck(number){
+  if (number > 999999999){return "Error";}
+  return number;
 }
 
 function decimalCheck(input) {
@@ -48,11 +56,6 @@ function leadingZero(input){
     }
   }
   return(".");
-}
-
-function parseTrailingZeros(input){
-  // TODO:
-  // parse trailing zeros after decimal operator button is pressed
 }
 
 function appendOperator(input, button) {
@@ -117,12 +120,26 @@ function updateDisplay(userInput) {
   return(userInput);
 }
 
+function redundantZeroCheck(userInput){
+  const operators = ["+", "-", "X", "/", "="];
+  if (userInput == "0") {return(userInput)}
+  for (let operator of operators) {
+    if (userInput.slice(-1) == operator) {
+      console.log("zero after operator!");
+      return userInput;
+    }
+  }
+  return userInput + "0"
+}
+
 function updateInput(userInput, button) {
   buttonClass = button.className;
   let validInput = false;
   let inputUpdate = "";
 
   if (buttonClass.includes("number")) {
+    if (userInput == "0") {return(button.textContent);}
+    if (button.textContent == "0"){return(redundantZeroCheck(userInput))}
     return(afterEquals(userInput, button));
   } else if (buttonClass.includes("operator")) {
     validInput = true;
@@ -150,7 +167,7 @@ const equals = document.querySelector("#equals-button");
 const clear = document.querySelector("#clear-button");
 const display = document.querySelector("#display-numbers");
 
-let userInput = "";
+let userInput = "0";
 
 numbers.forEach((button) => {
   button.addEventListener('click', () => {
@@ -181,8 +198,9 @@ clear.addEventListener('click', () => {
   userInput = "";
 });
 
-//colapse eventListeners into a function
-//display size
+
+//display size after input
+//round decimal
 //percent function
 //negate function
-//parseTrailingZeros function
+//colapse eventListeners into a function
