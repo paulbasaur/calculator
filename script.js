@@ -30,7 +30,13 @@ function negate(num1) {
 }
 
 function maxCheck(number){
-  if (number > 999999999){return "Error";}
+  if (number > 99999999.9){return "Error";}
+  const numString = number.toString();
+  if (numString.includes(".")) {
+    if (numString.length > 10) {
+      return numString.slice(0, 11);
+    }
+  }
   return number;
 }
 
@@ -101,8 +107,6 @@ function clearDisplay() {
 }
 
 function updateDisplay(userInput) {
-  console.log(userInput);
-  const display = document.querySelector("#display-numbers");
   const operators = ["+", "-", "X", "/", "="];
   let lastInput = userInput.slice(-1);
   if(lastInput == "=") {
@@ -125,7 +129,6 @@ function redundantZeroCheck(userInput){
   if (userInput == "0") {return(userInput)}
   for (let operator of operators) {
     if (userInput.slice(-1) == operator) {
-      console.log("zero after operator!");
       return userInput;
     }
   }
@@ -133,21 +136,22 @@ function redundantZeroCheck(userInput){
 }
 
 function updateInput(userInput, button) {
+  let newInput = userInput + button.textContent;
+  let newDisplay = updateDisplay(newInput);
   buttonClass = button.className;
-  let validInput = false;
   let inputUpdate = "";
 
   if (buttonClass.includes("number")) {
-    if (userInput == "0") {return(button.textContent);}
+    if (newDisplay.length > 10) {return userInput;}
+    if (userInput == "0") {return button.textContent;}
     if (button.textContent == "0"){return(redundantZeroCheck(userInput))}
-    return(afterEquals(userInput, button));
+    return afterEquals(userInput, button);
   } else if (buttonClass.includes("operator")) {
-    validInput = true;
     inputUpdate = appendOperator(userInput, button.textContent);
-    return (evaluateCheck(inputUpdate, button.textContent));
+    return evaluateCheck(inputUpdate, button.textContent);
   } else if (buttonClass.includes("decimal")) {
-    validInput = decimalCheck(userInput);
-    if (validInput) {
+    if (decimalCheck(userInput)) {
+      if (newDisplay.length > 10) {return userInput;}
       if (userInput.slice(-1) == "="){return "0.";}
       return (userInput + leadingZero(userInput))
     }
@@ -200,7 +204,3 @@ clear.addEventListener('click', () => {
 
 
 //display size after input
-//round decimal
-//percent function
-//negate function
-//colapse eventListeners into a function
