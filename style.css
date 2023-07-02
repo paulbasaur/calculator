@@ -24,7 +24,6 @@ body {
   padding-right: 5px;
   justify-content: flex-end;
   align-items: center;
-  /* border: 1px solid red; */
   font-size: 60px;
   border-style: inset;
   border-radius: 15px
@@ -35,15 +34,20 @@ body {
   flex-direction: column;
   justify-content: space-around;
   flex-grow: 1;
-  /* border: 1px solid red; */
   width: 360px;
   height: 440px;
+}
+
+#logo {
+  align-self: center;
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: blue;
+  font-size: 20px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  /* border: 1px solid red; */
 }
 
 .standard-button {
